@@ -36,13 +36,6 @@ bool SetNonBlock(int32_t sock) {
 }
 
 int32_t Socket(int32_t family, int32_t type, int32_t protocol) {
-    if (family != 0) {
-        family_ = family;
-    }
-
-    if (type != 0) {
-        sock_type_ = type;
-    }
 
     int32_t fd = -1;
     if ((fd = socket(family, type, protocol)) < 0) {
@@ -52,7 +45,7 @@ int32_t Socket(int32_t family, int32_t type, int32_t protocol) {
 }
 
 int32_t TcpListen(const char *host, const char *port, int32_t family) {
-    int listenfd;
+    int32_t listenfd;
     struct addrinfo hints, *res, *ressave;
 
     bzero(&hints, sizeof(struct addrinfo));
@@ -71,7 +64,7 @@ int32_t TcpListen(const char *host, const char *port, int32_t family) {
         if (NULL == res) {
             return -1;
         }
-        listenfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+        listenfd = Socket(res->ai_family, res->ai_socktype, res->ai_protocol);
         if (listenfd < 0) {
             continue;       /* error, try next one */
         }

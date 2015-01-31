@@ -22,6 +22,7 @@
 
 #define SOCKINFO_MAXSIZE 128
 
+#include <ev.h>
 
 class LibevConnector {
     public:
@@ -33,10 +34,17 @@ class LibevConnector {
 
         bool Initialize();
 
+        void LibevLoop();
+
     private:
+
         bool ConfigSet(const char* host, const char* port);
 
     private:
+
+        struct ev_loop *epoller_;
+
+
         char conf_host_[SOCKINFO_MAXSIZE];
         char conf_port_[SOCKINFO_MAXSIZE];
 

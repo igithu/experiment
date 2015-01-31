@@ -20,14 +20,35 @@
 #include "socket_util.h"
 
 
-LibevConnector::LibevConnector() {
+LibevConnector::LibevConnector() : epoller_(NULL) {
 }
 
 LibevConnector::~LibevConnector() {
+    if (NULL = epoller_) {
+        ev_loop_destroy(epoller_);
+    }
 }
 
-bool LibevConnector::Initialize() {
+bool LibevConnector::Initialize(const char *host, const char *port) {
+    int32_t listenfd = TcpListen(host, port);
+    if (listenfd < 0) {
+        return false;
+    }
+    
+    epoller_ = ev_loop_new(EVBACKEND_EPOLL | EVFLAG_NOENV);
+    struct ev_io socket_watcher;
+
+    ev_io_init(&socket_watcher, LibevConnector::ProcessCb, listenfd, EV_READ);
+    ev_io_start(epoller_, &socket_watcher);
+
     return true;
+}
+
+void LibevConnector::LibevLoop() {
+    
+    while (true) {
+        ev_loop(epoller_, 0);
+    }
 }
 
 bool LibevConnector::ConfigSet() {
