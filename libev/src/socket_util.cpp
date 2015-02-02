@@ -17,6 +17,9 @@
 
 #include "socket_util.h"
 
+#include "../log/ds_log.h"
+
+
 using std::string
 
 bool SetNonBlock(int32_t sock) {
@@ -139,6 +142,7 @@ int32_t Accept(int fd, struct sockaddr_in &sa, int32_t addrlen) {
     int32_t new_fd;
     do {
         new_fd = accept(fd, (struct sockaddr *) &sa, (socklen_t *) &addrlen);
+        SetNonBlock(new_fd);
 
         if (new_fd < 0) {
 #ifdef  EPROTO

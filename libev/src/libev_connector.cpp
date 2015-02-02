@@ -20,6 +20,7 @@
 #include <string>
 
 #include "socket_util.h"
+#include "../log/ds_log.h"
 
 using std::string;
 
