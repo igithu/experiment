@@ -1,6 +1,6 @@
 /***************************************************************************
  * 
- * Copyright (c) 2015 Baidu.com, Inc. All Rights Reserved
+ * Copyright (c) 2015 aishuyu, Inc. All Rights Reserved
  * 
  **************************************************************************/
  
@@ -8,7 +8,7 @@
  
 /**
  * @file socket_util.cpp
- * @author aishuyu(com@baidu.com)
+ * @author aishuyu(asy5178@163.com)
  * @date 2015/01/28 14:33:35
  * @brief 
  *  

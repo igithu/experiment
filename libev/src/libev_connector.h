@@ -37,19 +37,14 @@ class LibevConnector {
         void LibevLoop();
 
     private:
+        static void AcceptCb(struct ev_loop *loop, struct ev_io *watcher, int revents);
 
-        bool ConfigSet(const char* host, const char* port);
+        static void ProcessCb(struct ev_loop *loop, struct ev_io *watcher, int revents);
 
     private:
 
         struct ev_loop *epoller_;
 
-
-        char conf_host_[SOCKINFO_MAXSIZE];
-        char conf_port_[SOCKINFO_MAXSIZE];
-
-        char set_host_[SOCKINFO_MAXSIZE];
-        char set_port_[SOCKINFO_MAXSIZE];
 };
 
 
