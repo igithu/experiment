@@ -21,6 +21,7 @@
 #define  __SOCKET_UTIL_H_
 
 #include <sys/socket.h>
+#include <netinet/in.h>
 
 #include <string>
 
@@ -32,7 +33,7 @@ int32_t TcpListen(const char *host, const char *port, int32_t family = AF_UNSPEC
 
 int32_t TcpConnect(const char *host, const char *port, int32_t family = AF_UNSPEC);
 
-int32_t Accept(int fd, struct sockaddr_in &sa, int32_t addrlen);
+int32_t Accept(int fd, struct sockaddr_in& sa, int32_t addrlen);
 
 int32_t RecvMsg(int32_t fd, std::string& recv_msg_str);
 

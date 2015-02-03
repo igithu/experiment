@@ -32,7 +32,7 @@ class LibevConnector {
         // dtor
         ~LibevConnector();
 
-        bool Initialize();
+        bool Initialize(const char *host, const char *port);
 
         void LibevLoop();
 

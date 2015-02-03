@@ -17,10 +17,23 @@
 
 #include "socket_util.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <fcntl.h>
+#include <netinet/tcp.h> 
+#include <netdb.h>
+
 #include "../log/ds_log.h"
 
 
-using std::string
+using std::string;
 
 bool SetNonBlock(int32_t sock) {
     int32_t opts = fcntl(sock, F_GETFL);
@@ -84,7 +97,7 @@ int32_t TcpListen(const char *host, const char *port, int32_t family) {
         close(listenfd);    
     } while ((res = res->ai_next) != NULL);
 
-    if (res == NULL) {
+    if (NULL == res) {
         return -1;
     }
 
@@ -160,7 +173,7 @@ int32_t Accept(int fd, struct sockaddr_in &sa, int32_t addrlen) {
 int32_t RecvMsg(int32_t fd, std::string& recv_msg_str) {
     recv_msg_str = "";
 
-    const uint32_t MAXBUFLEN = 2048 * 2;
+    const uint32_t MAXBUFLEN = 512;
     char buf[MAXBUFLEN];
     memset(buf, 0, MAXBUFLEN);
 
@@ -168,6 +181,7 @@ int32_t RecvMsg(int32_t fd, std::string& recv_msg_str) {
         int32_t buf_len = recv(fd, buf, sizeof(buf) + 1, 0);
         if (buf_len < 0) {
             if (EAGAIN == errno || EINTR == errno) {
+                //DS_LOG(ERROR, "EAGAIN or EINTR in RecvMsg!");
                 break;
             } else {
                 return -1;

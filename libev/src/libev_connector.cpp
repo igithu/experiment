@@ -28,7 +28,7 @@ LibevConnector::LibevConnector() : epoller_(NULL) {
 }
 
 LibevConnector::~LibevConnector() {
-    if (NULL = epoller_) {
+    if (NULL == epoller_) {
         ev_loop_destroy(epoller_);
     }
 }
@@ -42,7 +42,7 @@ bool LibevConnector::Initialize(const char *host, const char *port) {
     epoller_ = ev_loop_new(EVBACKEND_EPOLL | EVFLAG_NOENV);
     struct ev_io socket_watcher;
 
-    ev_io_init(&socket_watcher, LibevConnector::ProcessCb, listenfd, EV_READ);
+    ev_io_init(&socket_watcher, LibevConnector::AcceptCb, listenfd, EV_READ);
     ev_io_start(epoller_, &socket_watcher);
 
     return true;
@@ -66,11 +66,12 @@ void LibevConnector::AcceptCb(struct ev_loop *loop, struct ev_io *watcher, int r
     }
     struct sockaddr_in client_addr;
     socklen_t len = sizeof(struct sockaddr_in);
-    int32_t cfd = Accept(watcher->fd, (struct sockaddr *)&client_addr, &len);
+    int32_t cfd = Accept(watcher->fd, client_addr, len);
     if (cfd < 0) {
         return;
     }
 
+    DS_LOG(INFO, "NEW connection coming!!");
     struct ev_io *client_eio = (struct ev_io*)malloc(sizeof(struct ev_io));
     ev_io_init(client_eio, LibevConnector::ProcessCb, cfd, EV_READ);
     ev_io_start(loop, client_eio);
@@ -83,12 +84,12 @@ void LibevConnector::ProcessCb(struct ev_loop *loop, struct ev_io *watcher, int 
         return;
     }
 
+    string recv_msg_str;
     RecvMsg(watcher->fd, recv_msg_str);
-    DS_LOG(INFO, "recv msg is %s", recv_msg_str.c_str());
-    
-    string new_str = "Echo server : " + recv_msg_str;
+    string new_str = "Libev Echo Server :" + recv_msg_str;
     SendMsg(watcher->fd, new_str);
-
+    close(watcher->fd);
+    ev_io_stop(loop, watcher);
     free(watcher);
 }
 
