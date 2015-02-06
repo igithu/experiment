@@ -28,7 +28,7 @@ LibevConnector::LibevConnector() : epoller_(NULL) {
 }
 
 LibevConnector::~LibevConnector() {
-    if (NULL == epoller_) {
+    if (NULL != epoller_) {
         ev_loop_destroy(epoller_);
     }
 }
