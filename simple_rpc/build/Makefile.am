@@ -41,7 +41,7 @@ rpc_service_SOURCES = \
 #INCLUDES = -I../third-64/libevent/include/
 #CXXFLAGS = -std=c++11 -Wall -g -fPIC
 rpc_service_CPPFLAGS = -I../../../third-64/protobuf/include/ \
-					   -I../../../util/thread/include/
+					   -I../../../pub_util/thread/include/
 rpc_service_LDFLAGS =-DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H -fpermissive 
 rpc_service_LDADD = -lpthread -lz -ldl -lrt  \
 					../../../third-64/protobuf/lib/*.a 

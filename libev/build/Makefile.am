@@ -2,7 +2,7 @@
 #SUBDIRS=src
 #DIST_SUBDIRS=src
 
-UTIL_LIB=../../../util/tools/tools.h ../../../util/tools/tools.cpp
+UTIL_LIB=../../../pub_util/tools/tools.h ../../../pub_util/tools/tools.cpp
 
 COMM_LIB=../src/libev_connector.h \
 		 ../src/libev_connector.cpp \
@@ -16,7 +16,7 @@ COMMON_CF = -I../../../third-64/protobuf/include/ \
 		   -I../../../third-64/boost/include/ \
 		   -I../../../third-64/iniparser/include/ \
 		   -I../../../third-64/libev/include/ \
-		   -I../../../util/tools/include/
+		   -I../../../pub_util/tools/include/
 
 COMMON_LD = -lpthread -lz -ldl -lrt \
 		   ../../../third-64/protobuf/lib/*.a \
@@ -33,7 +33,7 @@ libev_server_SOURCES = \
 			  $(UTIL_LIB)
 libev_server_CPPFLAGS = $(COMMON_CF) \
 						 -I../../../third-64/leveldb/include/ \
-  						 -I../../../util/thread/include/
+  						 -I../../../pub_util/thread/include/
 libev_server_LDFLAGS =-DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H -fpermissive 
 libev_server_LDADD = $(COMMON_LD)
 
@@ -43,6 +43,6 @@ libev_client_SOURCES = \
 			  $(COMM_LIB) \
 			  $(UTIL_LIB)
 libev_client_CPPFLAGS = $(COMMON_CF) \
-  						 -I../../../util/thread/include/
+  						 -I../../../pub_util/thread/include/
 libev_client_LDFLAGS =-DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H -fpermissive 
 libev_client_LDADD = $(COMMON_LD)
